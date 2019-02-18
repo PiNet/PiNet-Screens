@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>Clients</h1>
+
+    <h2>Add/edit clients</h2>
+    <form method=post style="max-width: 220px">
+        <dl>
+                    {{ render_field(form.mac_address, class="form-control") }}
+                    {{ render_field(form.hostname, class="form-control") }}
+                    {{ render_field(form.location, class="form-control") }}
+        </dl>
+        <p><input class="btn btn-primary" type=submit value="Add/edit">
+    </form>
+    <h2>Current clients</h2>
+    <p>Client already added to the system can be found below.</p>
+
+    <table>
+    <tr>
+        <th>MAC Address</th>
+        <th>Location</th>
+        <th>Hostname</th>
+        <th>Content</th>
+        <th>Autologin</th>
+        <th>Edit</th>
+    </tr>
+    {% for client in clients %}
+        <tr>
+            <td>{{ client.mac_address }}</td>
+            <td>{{ client.location }}</td>
+            <td>{{ client.hostname }}</td>
+            <td></td>
+            {% if client.ldm_autologin %} <td><a href="/clients/disable_auto_login/{{ client.unique_id }}" class="btn btn-danger" role="button">Disable</a></td>
+            {% else %} <td><a href="/clients/enable_auto_login/{{ client.unique_id }}" class="btn btn-success" role="button">Enable</a></td> {% endif %}
+            <td><a href="/clients/edit/{{ client.unique_id }}" class="btn btn-warning" role="button">Edit</a></td>
+        </tr>
+    {% endfor %}
+
+
+    </table>
+
+{% endblock %}

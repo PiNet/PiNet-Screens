@@ -2,6 +2,7 @@ import flask_login
 from flask import Flask, render_template
 from secrets.config import secret_key
 import models
+from routes import routes
 
 
 app = Flask(__name__)
@@ -12,6 +13,8 @@ login_manager = flask_login.LoginManager()
 
 login_manager.init_app(app)
 app.login_manager = login_manager
+
+app.register_blueprint(routes)
 
 @app.route("/")
 def home():

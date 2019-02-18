@@ -15,14 +15,21 @@ class RaspberryPi():
         self.mac_address = mac_address
         self.parameters = {}
 
+    @property
+    def unique_id(self):
+        return self.mac_address.replace(":", "")
+
 
 class LtsConf():
     parameters = dict()
-    raspberry_pis: List[RaspberryPi] = list()
+    raspberry_pis: List[RaspberryPi]
     path = ""
 
-    def __init__(self, path):
+    def __init__(self, path, parse=True):
         self.path = path
+        self.raspberry_pis = list()
+        if parse:
+            self.parse_conf()
 
     def parse_conf(self):
         with open(self.path, "r") as f:
@@ -55,7 +62,12 @@ class LtsConf():
                         elif key == "ldm_password":
                             current_raspberry_pi.password = value
                         elif key == "ldm_autologin":
-                            current_raspberry_pi.ldm_autologin = value
+                            if value.lower() == "true":
+                                current_raspberry_pi.ldm_autologin = True
+                            elif value.lower() == "false":
+                                current_raspberry_pi.ldm_autologin = False
+                            else:
+                                print("Error for ldm_autologin {}".format(value))
                         else:
                             current_raspberry_pi.parameters[key] = value
                     else:
@@ -84,5 +96,24 @@ class LtsConf():
                 conf_string = conf_string + "   ldm_password = {}\n".format(raspberry_pi.password)
             for key, value in raspberry_pi.parameters.items():
                 conf_string = conf_string + "   {} = {}\n".format(key, value)
-        with open("test.conf", "w") as f:
+        with open(self.path, "w") as f:
             f.write(conf_string)
+
+    def add_update_client(self, mac_address, hostname, location):
+        for singe_client in self.raspberry_pis:
+            if singe_client.unique_id == mac_address.replace(":", ""):
+                singe_client.mac_address = mac_address
+                singe_client.hostname = hostname
+                singe_client.location = location
+                return
+        client = RaspberryPi(mac_address=mac_address)
+        client.mac_address = mac_address
+        client.hostname = hostname
+        client.location = location
+        return
+
+    def get_client(self, mac_address):
+        for singe_client in self.raspberry_pis:
+            if singe_client.unique_id == mac_address.replace(":", ""):
+                return singe_client
+        return None

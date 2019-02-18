@@ -1,7 +1,17 @@
+import flask_login
 from flask import Flask, render_template
+from secrets.config import secret_key
+import models
+
 
 app = Flask(__name__)
+app.secret_key = secret_key
 
+
+login_manager = flask_login.LoginManager()
+
+login_manager.init_app(app)
+app.login_manager = login_manager
 
 @app.route("/")
 def home():

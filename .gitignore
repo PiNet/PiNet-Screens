@@ -70,3 +70,4 @@ __pycache__/*
 
 venv/
 secrets/config.py
+pinet_screens.db

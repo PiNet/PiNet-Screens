@@ -2,3 +2,4 @@ flask
 wtforms
 flask-login
 sqlalchemy
+flask_bcrypt

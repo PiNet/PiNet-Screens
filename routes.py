@@ -23,7 +23,8 @@ def clients_home(client_mac=None):
         form.location.default = client.location
         form.process()
 
-    return render_template("clients_home.html", form=form, clients = clients)
+    content = database.get_all_content()
+    return render_template("clients_home.html", form=form, clients=clients, content=content)
 
 
 @routes.route("/clients/disable_auto_login/<unique_id>")
@@ -54,5 +55,24 @@ def content_home():
     script_content = database.get_all_script_content()
     return render_template("content_home.html", browser_content=browser_content, script_content=script_content)
 
+
+@routes.route("/content/add_browser_content",  methods=['GET', 'POST'])
+def add_browser_content():
+    form = forms.BrowserContentForm(request.form)
+    if request.method == 'POST' and form.validate():
+        if not database.create_content(content_name=form.content_name.data, browser=True, url=form.content_url.data):
+            flash("Failed to add content. {} already exists.".format(form.content_name.data), "danger")
+        return redirect(url_for("routes.content_home"))
+    return render_template("add_browser_content.html", form=form)
+
+
+@routes.route("/content/add_script_content",  methods=['GET', 'POST'])
+def add_script_content():
+    form = forms.ScriptContentForm(request.form)
+    if request.method == 'POST' and form.validate():
+        if not database.create_content(content_name=form.content_name.data, script=True, script_body=form.content_script.data):
+            flash("Failed to add content. {} already exists.".format(form.content_name.data), "danger")
+        return redirect(url_for("routes.content_home"))
+    return render_template("add_script_content.html", form=form)
 
 

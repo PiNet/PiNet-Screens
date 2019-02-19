@@ -37,7 +37,8 @@ def get_all_script_content():
 
 def create_content(content_name, browser=False, script=False, url=None, script_body=None):
     if db_session.query(Content).filter(Content.content_name == content_name).first():
-        return "Content already exists with this name"
+        return False # Content already exists with this name
     new_content = Content(content_name=content_name, browser=browser, url=url, script=script, script_body=script_body)
     db_session.add(new_content)
     db_session.commit()
+    return True

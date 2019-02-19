@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>Add browser content</h1>
+    <form method=post style="max-width: 220px">
+        <dl>
+                    {{ render_field(form.content_name, class="form-control") }}
+                    {{ render_field(form.content_url, class="form-control") }}
+        </dl>
+        <p><input class="btn btn-primary" type=submit value="Add">
+    </form>
+
+
+{% endblock %}

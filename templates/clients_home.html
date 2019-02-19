@@ -30,7 +30,14 @@
             <td>{{ client.mac_address }}</td>
             <td>{{ client.location }}</td>
             <td>{{ client.hostname }}</td>
-            <td></td>
+            <td><label>
+                <select class="selectpicker">
+                    <option selected>None</option>
+                    {% for single_content in content %}
+                        <option>{{ single_content.content_name }}</option>
+                    {% endfor %}
+                </select>
+            </label></td>
             {% if client.ldm_autologin %} <td><a href="/clients/disable_auto_login/{{ client.unique_id }}" class="btn btn-danger" role="button">Disable</a></td>
             {% else %} <td><a href="/clients/enable_auto_login/{{ client.unique_id }}" class="btn btn-success" role="button">Enable</a></td> {% endif %}
             <td><a href="/clients/edit/{{ client.unique_id }}" class="btn btn-warning" role="button">Edit</a></td>

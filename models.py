@@ -5,11 +5,17 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
+from flask_login import UserMixin
+
 Base = declarative_base()
 engine = create_engine('sqlite:///pinet_screens.db')
 
 
-class LoginUser(Base):
+class LoginUser(UserMixin, Base):
+
+    def get_id(self):
+        return self.user_id
+
     __tablename__= "login_users"
     user_id = Column(Integer, autoincrement=True, primary_key=True, unique=True, nullable=False)
     username = Column(String(30), nullable=False, unique=True)

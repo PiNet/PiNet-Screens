@@ -38,6 +38,7 @@ def get_all_script_content():
 def create_content(content_name, browser=False, script=False, url=None, script_body=None):
     if db_session.query(Content).filter(Content.content_name == content_name).first():
         return False # Content already exists with this name
+    # TODO : Fix scripts being saved without newlines
     new_content = Content(content_name=content_name, browser=browser, url=url, script=script, script_body=script_body)
     db_session.add(new_content)
     db_session.commit()
@@ -66,3 +67,8 @@ def update_client_content(client_id, content_id):
     client = db_session.query(Client).filter(Client.client_id == int(client_id)).first()
     client.content_id = content_id
     db_session.commit()
+
+
+def get_content_from_id(content_id):
+    content = db_session.query(Content).filter(Content.content_id == int(content_id)).first()
+    return content

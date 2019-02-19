@@ -80,6 +80,12 @@ def add_script_content():
     return render_template("add_script_content.html", form=form)
 
 
+@routes.route("/content/view_script/<content_id>")
+def view_script_content(content_id):
+    content = database.get_content_from_id(content_id)
+    return content.script_body
+
+
 @routes.route("/clients/update_content_ajax", methods=['GET', 'POST'])
 def client_update_content_ajax():
     content_id = request.form['content_id']

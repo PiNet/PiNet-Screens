@@ -85,17 +85,18 @@ class LtsConf():
             conf_string = conf_string + "{} = {}\n".format(key, value)
 
         for raspberry_pi in self.raspberry_pis:
-            conf_string = conf_string + "\n[{}]\n".format(raspberry_pi.mac_address)
-            if raspberry_pi.location:
-                conf_string = conf_string + "   # location = {}\n".format(raspberry_pi.location)
-            if raspberry_pi.hostname:
-                conf_string = conf_string + "   hostname = {}\n".format(raspberry_pi.hostname)
-            if raspberry_pi.ldm_autologin:
-                conf_string = conf_string + "   ldm_autologin = True\n"
-                conf_string = conf_string + "   ldm_username = {}\n".format(raspberry_pi.user)
-                conf_string = conf_string + "   ldm_password = {}\n".format(raspberry_pi.password)
-            for key, value in raspberry_pi.parameters.items():
-                conf_string = conf_string + "   {} = {}\n".format(key, value)
+            if raspberry_pi.mac_address not in conf_string:
+                conf_string = conf_string + "\n[{}]\n".format(raspberry_pi.mac_address)
+                if raspberry_pi.location:
+                    conf_string = conf_string + "   # location = {}\n".format(raspberry_pi.location)
+                if raspberry_pi.hostname:
+                    conf_string = conf_string + "   hostname = {}\n".format(raspberry_pi.hostname)
+                if raspberry_pi.ldm_autologin:
+                    conf_string = conf_string + "   ldm_autologin = True\n"
+                    conf_string = conf_string + "   ldm_username = {}\n".format(raspberry_pi.user)
+                    conf_string = conf_string + "   ldm_password = {}\n".format(raspberry_pi.password)
+                for key, value in raspberry_pi.parameters.items():
+                    conf_string = conf_string + "   {} = {}\n".format(key, value)
         with open(self.path, "w") as f:
             f.write(conf_string)
 

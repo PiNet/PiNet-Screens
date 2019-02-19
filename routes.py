@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, make_response, redirect, 
 
 import forms
 import lts_conf
+import database
 
 lts_conf_path = "test_data/lts.conf"
 
@@ -46,9 +47,12 @@ def enable_auto_login(unique_id):
             lts.write_conf()
             return redirect(url_for("routes.clients_home"))
 
+
 @routes.route("/content")
 def content_home():
-    pass
+    browser_content = database.get_all_browser_content()
+    script_content = database.get_all_script_content()
+    return render_template("content_home.html", browser_content=browser_content, script_content=script_content)
 
 
 

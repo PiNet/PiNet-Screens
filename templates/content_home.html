@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>Content</h1>
+
+    <h2>Add new content</h2>
+
+    <h2>Current content</h2>
+    <p>Content already added to the system can be found below.</p>
+
+
+    <h4>Browser content</h4>
+    <table>
+    <tr>
+        <th>Content name</th>
+        <th>URL</th>
+        <th>Currently running on</th>
+        <th>Remove content</th>
+    </tr>
+    {% for content in browser_content %}
+        <tr>
+            <td>{{ content.content_name }}</td>
+            <td>{{ content.url }}</td>
+            <td></td>
+            <td><a href="/content/edit/{{ content.content_id }}" class="btn btn-warning" role="button">Remove</a></td>
+        </tr>
+    {% endfor %}
+
+
+    </table>
+
+    <h4>Script content</h4>
+    <table>
+    <tr>
+        <th>Content name</th>
+        <th>View script</th>
+        <th>Currently running on</th>
+        <th>Remove content</th>
+    </tr>
+    {% for content in browser_content %}
+        <tr>
+            <td>{{ content.content_name }}</td>
+            <td><a href="/content/view_script/{{ content.content_id }}" class="btn btn-info" role="button">Remove</a></td>
+            <td></td>
+            <td><a href="/content/edit/{{ content.content_id }}" class="btn btn-warning" role="button">Remove</a></td>
+        </tr>
+    {% endfor %}
+
+
+    </table>
+
+{% endblock %}

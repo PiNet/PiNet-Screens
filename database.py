@@ -51,6 +51,9 @@ def get_all_clients():
 
 
 def create_client(mac_address, hostname, location, client_id=None):
+    if db_session.query(Client).filter(Client.mac_address == mac_address).first() or db_session.query(Client).filter(Client.hostname == hostname).first():
+        return False
+
     if client_id:
         client = db_session.query(Client).filter(Client.client_id == client_id)
     else:
@@ -61,6 +64,7 @@ def create_client(mac_address, hostname, location, client_id=None):
     client.location = location
     db_session.add(client)
     db_session.commit()
+    return True
 
 
 def update_client_content(client_id, content_id):
@@ -72,3 +76,36 @@ def update_client_content(client_id, content_id):
 def get_content_from_id(content_id):
     content = db_session.query(Content).filter(Content.content_id == int(content_id)).first()
     return content
+
+
+def remove_content_from_id(content_id):
+    content = get_content_from_id(content_id)
+    db_session.delete(content)
+    db_session.commit()
+
+
+def get_client_from_id(client_id):
+    client = db_session.query(Client).filter(Client.client_id == int(client_id)).first()
+    return client
+
+
+def remove_client_from_id(client_id):
+    client = get_client_from_id(client_id)
+    db_session.delete(client)
+    db_session.commit()
+
+
+def update_ldm_autologin(client_id, ldm_autologin):
+    client = get_client_from_id(client_id)
+    client.ldm_autologin = ldm_autologin
+    db_session.commit()
+
+
+def get_login_user_from_id(user_id):
+    login_user = db_session.query(LoginUser).filter(LoginUser.user_id == int(user_id)).first()
+    return login_user
+
+
+def get_all_users():
+    users = db_session.query(LoginUser).all()
+    return users

@@ -1,22 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
+    {%include '_message_flash_helper.html'%}
     <h1>Content</h1>
-
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-              <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
-              {% if messages %}
-                {% for category, message in messages %}
-                  <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <!-- <strong>Title</strong> --> {{ message }}
-                  </div>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
-
 
     <h2>Add new content</h2>
     <a href="/content/add_browser_content" class="btn btn-success" role="button">Add browser content</a>
@@ -37,9 +23,9 @@
     {% for content in browser_content %}
         <tr>
             <td>{{ content.content_name }}</td>
-            <td>{{ content.url }}</td>
+            <td><a href="{{ content.url }}">{{ content.url }}</a></td>
             <td>{% for client in content.clients %} {{ client.hostname }} {% endfor %}</td>
-            <td><a href="/content/edit/{{ content.content_id }}" class="btn btn-warning" role="button">Remove</a></td>
+            <td><a href="/content/remove/{{ content.content_id }}" class="btn btn-warning" role="button">Remove</a></td>
         </tr>
     {% endfor %}
 
@@ -59,7 +45,7 @@
             <td>{{ content.content_name }}</td>
             <td><a href="/content/view_script/{{ content.content_id }}" class="btn btn-info" role="button">View script</a></td>
             <td>{% for client in content.clients %} {{ client.hostname }} {% endfor %}</td>
-            <td><a href="/content/edit/{{ content.content_id }}" class="btn btn-warning" role="button">Remove</a></td>
+            <td><a href="/content/remove/{{ content.content_id }}" class="btn btn-warning" role="button">Remove</a></td>
         </tr>
     {% endfor %}
 

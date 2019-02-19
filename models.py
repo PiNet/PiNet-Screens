@@ -25,6 +25,19 @@ class Content(Base):
     url = Column(String(200), nullable=True)
     script = Column(Boolean, nullable=False)
     script_body = Column(String(2000), nullable=True)
+    clients = relationship("Client")
+
+
+class Client(Base):
+    __tablename__ = "clients"
+    client_id = Column(Integer, autoincrement=True, primary_key=True, unique=True, nullable=False)
+    mac_address = Column(String(17), nullable=False, unique=True)
+    hostname = Column(String(63), nullable=True, unique=True)
+    location = Column(String(50), nullable=False)
+    ldm_autologin = Column(Boolean, nullable=False)
+
+    content_id = Column(ForeignKey('content.content_id'), primary_key=False, nullable=True, index=True)
+    content = relationship('Content')
 
 
 Base.metadata.create_all(engine)

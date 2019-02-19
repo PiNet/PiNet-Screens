@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import LoginUser, Base, Content
+from models import LoginUser, Base, Content, Client
 
 engine = create_engine('sqlite:///pinet_screens.db?check_same_thread=False')
 Base.metadata.bind = engine
@@ -42,3 +42,27 @@ def create_content(content_name, browser=False, script=False, url=None, script_b
     db_session.add(new_content)
     db_session.commit()
     return True
+
+
+def get_all_clients():
+    clients = db_session.query(Client).all()
+    return clients
+
+
+def create_client(mac_address, hostname, location, client_id=None):
+    if client_id:
+        client = db_session.query(Client).filter(Client.client_id == client_id)
+    else:
+        client = Client()
+        client.ldm_autologin = False
+    client.mac_address = mac_address
+    client.hostname = hostname
+    client.location = location
+    db_session.add(client)
+    db_session.commit()
+
+
+def update_client_content(client_id, content_id):
+    client = db_session.query(Client).filter(Client.client_id == int(client_id)).first()
+    client.content_id = content_id
+    db_session.commit()

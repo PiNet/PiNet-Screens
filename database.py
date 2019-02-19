@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from models import LoginUser, Base, Content
 
-engine = create_engine('sqlite:///pinet_screens.db')
+engine = create_engine('sqlite:///pinet_screens.db?check_same_thread=False')
 Base.metadata.bind = engine
 DBParent = sessionmaker(bind=engine)
 db_session = DBParent()

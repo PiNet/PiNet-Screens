@@ -51,11 +51,11 @@ def get_all_clients():
 
 
 def create_client(mac_address, hostname, location, client_id=None):
-    if db_session.query(Client).filter(Client.mac_address == mac_address).first() or db_session.query(Client).filter(Client.hostname == hostname).first():
+    if not client_id and (db_session.query(Client).filter(Client.mac_address == mac_address).first() or db_session.query(Client).filter(Client.hostname == hostname).first()):
         return False
 
     if client_id:
-        client = db_session.query(Client).filter(Client.client_id == client_id)
+        client = db_session.query(Client).filter(Client.client_id == client_id).first()
     else:
         client = Client()
         client.ldm_autologin = False

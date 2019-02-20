@@ -8,7 +8,7 @@ import copy
 import lts_conf
 import secrets.config
 
-default_new_client_message = """zenity --info --text '<span font="32">PiNet Screens</span><span font="20">\n\nThis client is not set up yet\n\nHostname - bob.local\nMAC Address - hg:gh:dh:ey:dh:6d</span>\n\n' --width 600"""
+default_new_client_message = """zenity --info --text '<span font="32">PiNet Screens</span><span font="20">\n\nThis client is not set up yet\n\nHostname - {}\nMAC Address - {}</span>\n\n' --width 600"""
 
 def is_mac_address(mac_address):
     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac_address.lower()): # Check if is a MAC address
@@ -89,7 +89,7 @@ def build_scripts():
                 else:
                     write_browser("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), client.content.url)
             else:
-                write_script("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), default_new_client_message)
+                write_script("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), default_new_client_message.format(client.hostname, client.mac_address))
 
 
 

@@ -16,6 +16,7 @@ login_manager = flask_login.LoginManager()
 
 login_manager.init_app(app)
 login_manager.login_view = 'routes.login'
+login_manager.login_message_category = "danger"
 app.login_manager = login_manager
 
 app.register_blueprint(routes)

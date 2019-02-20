@@ -7,6 +7,7 @@ import copy
 
 import lts_conf
 import secrets.config
+import os
 
 default_new_client_message = """zenity --info --text '<span font="32">PiNet Screens</span><span font="20">\n\nThis client is not set up yet.\n\nHostname - {}\nMAC Address - {}</span>\n\n' --width 600"""
 
@@ -79,6 +80,7 @@ def build_scripts():
             print("Old MAC address now found, adding {}".format(old_client.mac_address))
             #lts.raspberry_pis.append(old_client)
     print(lts.raspberry_pis)
+    os.system("rm {}/*".format(secrets.config.client_config_files_path))
     lts.write_conf()
 
     for client in lts.raspberry_pis:
@@ -90,7 +92,6 @@ def build_scripts():
                     write_browser("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), client.content.url)
             else:
                 write_script("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), default_new_client_message.format(client.hostname, client.mac_address))
-
 
 
 

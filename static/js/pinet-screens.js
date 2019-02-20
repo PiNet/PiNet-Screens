@@ -20,7 +20,7 @@ function clientUpdateContent(client_id, content_id) {
 
 $(function() {
 
-  $("#content-picker").on("changed.bs.select", function(e, clickedIndex, newValue, oldValue) {
+  $(".selectpicker").on("changed.bs.select", function(e, clickedIndex, newValue, oldValue) {
 
       clientUpdateContent(this.attributes["data-client"].value, this.value);
       console.log(this.value, clickedIndex, newValue, oldValue)

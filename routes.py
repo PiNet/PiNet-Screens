@@ -39,8 +39,11 @@ def logout():
 def clients_home(client_id=None):
     form = forms.ClientForm(request.form)
     if request.method == 'POST' and form.validate():
-        if not database.create_client(mac_address=form.mac_address.data, location=form.location.data, hostname=form.hostname.data):
+        if not database.create_client(mac_address=form.mac_address.data, location=form.location.data, hostname=form.hostname.data, client_id=client_id):
             flash("Unable to add/edit, MAC address or hostname not unique.", "danger")
+        else:
+            flash("Client entry added/updated successfully.", "success")
+            return redirect(url_for("routes.clients_home"))
 
     if client_id and request.method == "GET":
         client = database.get_client_from_id(int(client_id))
@@ -50,7 +53,7 @@ def clients_home(client_id=None):
         form.process()
     content = database.get_all_content()
     clients = database.get_all_clients()
-    return render_template("clients_home.html", form=form, clients=clients, content=content)
+    return render_template("clients_home.html", form=form, clients=clients, content=content, edit=bool(client_id))
 
 
 @routes.route("/clients/disable_auto_login/<client_id>")
@@ -128,3 +131,4 @@ def remove_client(client_id):
     database.remove_client_from_id(client_id)
     flash("Client successfully removed.", "success")
     return redirect(url_for("routes.clients_home"))
+

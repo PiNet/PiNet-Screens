@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -64,7 +66,7 @@ def create_client(mac_address, hostname, location, client_id=None):
     client.location = location
     db_session.add(client)
     db_session.commit()
-    return True
+    return client.client_id
 
 
 def update_client_content(client_id, content_id):
@@ -109,3 +111,9 @@ def get_login_user_from_id(user_id):
 def get_all_users():
     users = db_session.query(LoginUser).all()
     return users
+
+
+def update_client_check_in(client_id):
+    client = get_client_from_id(client_id)
+    client.last_checked_in = datetime.datetime.now()
+    db_session.commit()

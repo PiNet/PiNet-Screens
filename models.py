@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -41,6 +41,7 @@ class Client(Base):
     hostname = Column(String(63), nullable=True, unique=True)
     location = Column(String(50), nullable=False)
     ldm_autologin = Column(Boolean, nullable=False)
+    last_checked_in = Column(DateTime)
 
     content_id = Column(ForeignKey('content.content_id'), primary_key=False, nullable=True, index=True)
     content = relationship('Content')

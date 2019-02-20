@@ -11,7 +11,12 @@
                     {{ render_field(form.hostname, class="form-control") }}
                     {{ render_field(form.location, class="form-control") }}
         </dl>
-        <p><input class="btn btn-primary" type=submit value="Add/edit">
+        {% if edit %}
+            <p><input class="btn btn-primary" type=submit value="Edit"></p>
+        {% else %}
+            <p><input class="btn btn-primary" type=submit value="Add"></p>
+        {% endif %}
+
     </form>
     <h2>Current clients</h2>
     <p>Clients already added to the system can be found below.</p>
@@ -21,6 +26,7 @@
         <th>MAC Address</th>
         <th>Location</th>
         <th>Hostname</th>
+        <th>Last checked in</th>
         <th>Content</th>
         <th>Autologin</th>
         <th>Edit</th>
@@ -31,8 +37,13 @@
             <td>{{ client.mac_address }}</td>
             <td>{{ client.location }}</td>
             <td>{{ client.hostname }}</td>
+            {% if client.last_checked_in %}
+                <td>{{ client.last_checked_in.strftime('%H:%M - %d/%m/%Y') }}</td>
+            {% else %}
+                <td>Never</td>
+            {% endif %}
             <td><label>
-                <select data-client="{{ client.client_id }}" class="selectpicker" id="content-picker">
+                <select data-client="{{ client.client_id }}" class="selectpicker selectcontent" id="content-picker">
                     {% if not client.content_id %}
                         <option selected value="-1">None</option>
                     {% else %}
@@ -53,8 +64,11 @@
             <td><a href="/clients/remove/{{ client.client_id }}" class="btn btn-danger" role="button">Remove</a></td>
         </tr>
     {% endfor %}
-
-
     </table>
+
+    <br>
+    <a href="/clients/apply" class="btn btn-info" role="button" id="applyconfigbutton">Apply configuration update</a>
+    <br>
+    <br>
 
 {% endblock %}

@@ -3,3 +3,5 @@ wtforms
 flask-login
 sqlalchemy
 flask_bcrypt
+requests
+netifaces

@@ -5,8 +5,8 @@ import forms
 import lts_conf
 import database
 import util
+import secrets.config as config
 
-lts_conf_path = "test_data/lts.conf"
 
 routes = Blueprint('routes', __name__, template_folder='templates')
 
@@ -132,3 +132,19 @@ def remove_client(client_id):
     flash("Client successfully removed.", "success")
     return redirect(url_for("routes.clients_home"))
 
+
+@routes.route("/endpoint/update", methods=['POST'])
+def endpoint_update():
+    update = request.json
+    mac_address = update["mac_address"]
+    hostname = update["hostname"]
+    clients = database.get_all_clients()
+    for client in clients:
+        if client.mac_address == mac_address:
+            database.update_client_check_in(client.client_id)
+            return ""
+    client_id = database.create_client(mac_address=mac_address, hostname=hostname, location="Unknown - Auto added")
+    database.update_client_check_in(client_id)
+
+    print(update)
+    return ""

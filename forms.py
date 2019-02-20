@@ -9,8 +9,8 @@ class LoginForm(Form):
 
 class ClientForm(Form):
     def hostname_validation(form, field):
-        if not "." in field.data or len(field.data) > 63:
-            raise ValidationError('Hostname must be in the format of name.something and be under 63 chars long.')
+        if "." in field.data or len(field.data) > 63:
+            raise ValidationError('Hostname must be under 63 chars long and can not contain a dot.')
 
     def pi_validation(form, field):
         if not field.data.lower().startswith("b8:27:eb"):

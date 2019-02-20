@@ -8,7 +8,7 @@ import copy
 import lts_conf
 import secrets.config
 
-default_new_client_message = """zenity --info --text '<span font="32">PiNet Screens</span><span font="20">\n\nThis client is not set up yet\n\nHostname - {}\nMAC Address - {}</span>\n\n' --width 600"""
+default_new_client_message = """zenity --info --text '<span font="32">PiNet Screens</span><span font="20">\n\nThis client is not set up yet.\n\nHostname - {}\nMAC Address - {}</span>\n\n' --width 600"""
 
 def is_mac_address(mac_address):
     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac_address.lower()): # Check if is a MAC address

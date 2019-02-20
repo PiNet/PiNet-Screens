@@ -138,7 +138,7 @@ def remove_client(client_id):
 def apply_config_update():
     util.build_scripts()
 
-    flash("Updates applied to configuration files. Please reboot any changed Raspberry Pis", "success")
+    flash("Updates applied to configuration files. Please reboot any edited clients if they do not automatically.", "success")
     return redirect(url_for("routes.clients_home"))
 
 

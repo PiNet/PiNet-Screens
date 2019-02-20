@@ -1,7 +1,6 @@
 import flask_login
 from flask import Flask, render_template, redirect, url_for
 from secrets.config import secret_key
-import models
 from routes import routes
 import database
 import util

@@ -3,7 +3,12 @@ import database
 import flask_bcrypt
 import random
 import string
+import copy
 
+import lts_conf
+import secrets.config
+
+default_new_client_message = """zenity --info --text '<span font="32">PiNet Screens</span><span font="20">\n\nThis client is not set up yet\n\nHostname - bob.local\nMAC Address - hg:gh:dh:ey:dh:6d</span>\n\n' --width 600"""
 
 def is_mac_address(mac_address):
     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac_address.lower()): # Check if is a MAC address
@@ -31,3 +36,64 @@ def validate_login(username, password):
 def create_user(username, password):
     password_salt, password_hash = create_password_salt(password)
     database.create_user(username, password_hash, password_salt)
+
+
+def write_browser(path, url):
+    print("Writing browser to {} with {}".format(path, url))
+    with open(path, "w") as f:
+        f.write("chromium-browser {}".format(url))
+
+
+def write_script(path, script):
+    print("Writing script to {} with {}".format(path, script))
+    with open(path, "w") as f:
+        f.write(script)
+
+
+
+
+
+def build_scripts():
+    clients = database.get_all_clients()
+    lts = lts_conf.LtsConf(secrets.config.lts_conf_path)
+    lts.old_raspberry_pis = copy.deepcopy(lts.raspberry_pis)
+    lts.raspberry_pis = []
+    for client in clients:
+        new_client = lts_conf.RaspberryPi(mac_address=client.mac_address)
+        new_client.hostname = client.hostname
+        new_client.ldm_autologin = client.ldm_autologin
+        new_client.user = secrets.config.default_pinet_username
+        new_client.password = secrets.config.default_pinet_password
+        new_client.location = client.location
+        new_client.content = client.content
+        for old_client in lts.old_raspberry_pis:
+            if old_client.mac_address == new_client.mac_address:
+                new_client.parameters = old_client.parameters
+        lts.raspberry_pis.append(new_client)
+
+    for old_client in lts.old_raspberry_pis:
+        for new_client in lts.raspberry_pis:
+            if old_client.mac_address == new_client.mac_address:
+                break
+        else:
+            print("Old MAC address now found, adding {}".format(old_client.mac_address))
+            #lts.raspberry_pis.append(old_client)
+    print(lts.raspberry_pis)
+    lts.write_conf()
+
+    for client in lts.raspberry_pis:
+        if client.ldm_autologin:
+            if client.content:
+                if client.content.script:
+                    write_script("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), client.content.script_body)
+                else:
+                    write_browser("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), client.content.url)
+            else:
+                write_script("{}/{}".format(secrets.config.client_config_files_path, client.mac_address), default_new_client_message)
+
+
+
+
+
+
+

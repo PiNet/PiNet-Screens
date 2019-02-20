@@ -133,6 +133,15 @@ def remove_client(client_id):
     return redirect(url_for("routes.clients_home"))
 
 
+@routes.route("/clients/apply")
+@login_required
+def apply_config_update():
+    util.build_scripts()
+
+    flash("Updates applied to configuration files. Please reboot any changed Raspberry Pis", "success")
+    return redirect(url_for("routes.clients_home"))
+
+
 @routes.route("/endpoint/update", methods=['POST'])
 def endpoint_update():
     update = request.json

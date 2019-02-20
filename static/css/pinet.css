@@ -2,3 +2,8 @@ th, td {
     border: 1px solid black;
     padding: 15px;
 }
+
+#applyconfigbutton {
+    font-size: 18px;
+    padding: 10px;
+}

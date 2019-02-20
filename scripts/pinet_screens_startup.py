@@ -20,10 +20,14 @@ def background_thread():
     time.sleep(30)
     while True:
         report_back(mac_address=get_mac_address())
+        if not ran_script_path:
+            print("No script found...")
+            time.sleep(30)
+            continue
         h = hash_file(ran_script_path)
         if h != file_hash:
             os.system("sudo reboot")
-        time.sleep(60)
+        time.sleep(30)
 
 
 def get_mac_address():
@@ -48,15 +52,18 @@ def report_back(mac_address):
 
 
 def main():
+    global ran_script_path, file_hash
     mac_address = get_mac_address()
     report_back(mac_address)
-    thread = Thread(target=background_thread())
+    thread = Thread(target=background_thread)
     thread.daemon = True
     thread.start()
     for file in os.listdir(script_root):
         if file == mac_address:
             print("Found match! {}".format(file))
-            os.system("bash {}{}".format(script_root, file))
+            ran_script_path = "{}{}".format(script_root, file)
+            file_hash = hash_file(ran_script_path)
+            os.system("bash {}".format(ran_script_path))
 
     thread.join()
 

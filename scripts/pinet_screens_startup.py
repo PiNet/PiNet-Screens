@@ -26,7 +26,7 @@ def background_thread():
             continue
         h = hash_file(ran_script_path)
         if h != file_hash:
-            os.system("sudo reboot")
+            os.system("pkill -SIGTERM -f lxsession") # Trigger a logout and back in
         time.sleep(30)
 
 

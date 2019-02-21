@@ -86,10 +86,13 @@ cp /opt/PiNet-Screens/secrets/config_example.py /opt/PiNet-Screens/secrets/confi
 python3 -m venv /opt/PiNet-Screens/venv
 source /opt/PiNet-Screens/venv/bin/activate
 pip3 install -r /opt/PiNet-Screens/requirements.txt
+python3 /opt/PiNet-Screens/scripts/create_user.py
 deactivate
 
+useradd -r pinetscreens
+
 cp scripts/pinetscreens.service /etc/systemd/system/pinetscreens.service
-python3 /opt/PiNet-Screens/scripts/create_user.py
+
 
 sudo systemctl start pinetscreens
 sudo systemctl enable pinetscreens

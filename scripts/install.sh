@@ -77,7 +77,7 @@ esac
 
 cd ../
 
-apt install python3-venv
+apt install python3-venv -y
 
 mkdir /opt/PiNet-Screens
 cp -r * /opt/PiNet-Screens
@@ -85,11 +85,11 @@ cp /opt/PiNet-Screens/secrets/config_example.py /opt/PiNet-Screens/secrets/confi
 
 python3 -m venv /opt/PiNet-Screens/venv
 source /opt/PiNet-Screens/venv/bin/activate
-pip3 -r install /opt/PiNet-Screens/requirements.txt
+pip3 install -r /opt/PiNet-Screens/requirements.txt
 deactivate
 
 cp scripts/pinetscreens.service /etc/systemd/system/pinetscreens.service
-python3 /opt/PiNetScreens/scripts/create_user.py
+python3 /opt/PiNet-Screens/scripts/create_user.py
 
 sudo systemctl start pinetscreens
 sudo systemctl enable pinetscreens

@@ -60,9 +60,10 @@ case "$response" in
         ;;
 esac
 
+apt install python3-venv
 
 mkdir /opt/PiNet-Screens
-cp * /opt/PiNet-Screens
+cp -r * /opt/PiNet-Screens
 
 python3 -m venv /opt/PiNetScreens/venv
 source /opt/PiNetScreens/venv/bin

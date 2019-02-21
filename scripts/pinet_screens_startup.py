@@ -58,13 +58,16 @@ def main():
     thread = Thread(target=background_thread)
     thread.daemon = True
     thread.start()
-    for file in os.listdir(script_root):
-        if file == mac_address:
-            print("Found match! {}".format(file))
-            ran_script_path = "{}{}".format(script_root, file)
-            file_hash = hash_file(ran_script_path)
-            os.system("bash {}".format(ran_script_path))
-
+    while True:
+        for file in os.listdir(script_root):
+            if file == mac_address:
+                print("Found match! {}".format(file))
+                ran_script_path = "{}{}".format(script_root, file)
+                file_hash = hash_file(ran_script_path)
+                os.system("bash {}".format(ran_script_path))
+                break
+        time.sleep(10)
+        print("No script found (or it crashed), waiting 10s till check is attempted again.")
     thread.join()
 
 

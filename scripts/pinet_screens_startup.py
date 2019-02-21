@@ -11,7 +11,7 @@ from threading import Thread
 
 
 server_address = "server" # Default LTSP IP address maps to server
-script_root = "/usr/local/bin/scripts/"
+script_root = "/home/shared/screens/scripts/"
 file_hash = ""
 ran_script_path = ""
 
@@ -43,7 +43,7 @@ def hash_file(path):
     hasher = hashlib.md5()
     with open(path, 'rb') as afile:
         buf = afile.read()
-        hasher.update(buf)
+    hasher.update(buf)
     return hasher.hexdigest()
 
 

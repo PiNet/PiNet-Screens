@@ -72,7 +72,7 @@ class LtsConf():
                         else:
                             current_raspberry_pi.parameters[key] = value
                     else:
-                        if key != "ldm_username" or key != "ldm_password" or key != "ldm_autologin":
+                        if not key.startswith("ldm_"):
                             self.parameters[key] = value
                 else:
                     print("Unknown line {}".format(line))

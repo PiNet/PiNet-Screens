@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 
 
+ReplaceAnyTextOnLine(){
+# ReplaceTextLine /textfile bob brian
+#REMEMBER!! The & symbol can't be in any of the strings as SED is using it for separating. Can change it if need be
+        egrep -i "$2" $1 >> /dev/null
+        if [ $? -eq 0 ]; then
+                sed -i "s&.*$2.*&$3&g" $1
+                return 0
+        else
+                echo "$3" >> $1
+                return 1
+        fi
+
+}
+
+
 LOGO=$(cat <<-END
 
   _____  _  _   _        _      _____
@@ -60,14 +75,17 @@ case "$response" in
         ;;
 esac
 
+cd ../
+
 apt install python3-venv
 
 mkdir /opt/PiNet-Screens
 cp -r * /opt/PiNet-Screens
+cp /opt/PiNet-Screens/secrets/config_example.py /opt/PiNet-Screens/secrets/config.py
 
-python3 -m venv /opt/PiNetScreens/venv
-source /opt/PiNetScreens/venv/bin
-pip3 -r install /opt/PiNetScreens/requirements.txt
+python3 -m venv /opt/PiNet-Screens/venv
+source /opt/PiNet-Screens/venv/bin/activate
+pip3 -r install /opt/PiNet-Screens/requirements.txt
 deactivate
 
 cp scripts/pinetscreens.service /etc/systemd/system/pinetscreens.service
@@ -77,3 +95,12 @@ sudo systemctl start pinetscreens
 sudo systemctl enable pinetscreens
 
 sensible-browser localhost:80
+
+
+# Setup shared folder that is used
+
+mkdir /home/shared/screens
+mkdir /home/shared/screens/scripts/
+chown root: /home/shared/screens
+chmod 0700 /home/shared/screens
+ReplaceAnyTextOnLine /usr/local/bin/bindfs-mount "/home/shared/screens" "bindfs -o perms=0775,force-group=teacher /home/shared/screens /home/shared/screens"

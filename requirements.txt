@@ -5,3 +5,4 @@ sqlalchemy
 flask_bcrypt
 requests
 netifaces
+gunicorn

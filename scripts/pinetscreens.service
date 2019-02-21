@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve PiNet Screens
+After=network.target
+
+[Service]
+User=pinetscreens
+Group=www-data
+WorkingDirectory=/opt/PiNetScreens/
+Environment="PATH=/opt/PiNetScreens/venv/bin"
+ExecStart=/opt/PiNetScreens/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:80  main:app
+
+[Install]
+WantedBy=multi-user.target

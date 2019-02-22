@@ -44,7 +44,7 @@
         <tr>
             <td>{{ content.content_name }}</td>
             <td><a href="/content/view_script/{{ content.content_id }}" class="btn btn-info" role="button">View script</a></td>
-            <td>{% for client in content.clients %} {{ client.hostname }} {% endfor %}</td>
+            <td>{% for client in content.clients %} {{ client.hostname }}, {% endfor %}</td>
             <td><a href="/content/remove/{{ content.content_id }}" class="btn btn-warning" role="button">Remove</a></td>
         </tr>
     {% endfor %}

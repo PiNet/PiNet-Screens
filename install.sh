@@ -11,7 +11,7 @@ if [[ ! "$BASH_VERSION" ]] ; then   #Checks that PiNet is being run using bash a
 	whiptail --title $"Shell error" --msgbox $"Please do not run PiNet with sudo sh $0. Please run it with bash using     sudo bash $0" 8 78
     echo $"Please do not run PiNet Screens installer with sh $0. Please run it with bash using     sudo bash $0" 1>&2
     exit 1
-
+fi
 
 ReplaceAnyTextOnLine(){
 # ReplaceTextLine /textfile bob brian

@@ -78,25 +78,29 @@ esac
 
 cd ../
 
-if [ -d "$INSTALLPATH" ]; then
+if [[ -d "$INSTALLPATH" ]]; then
     cd $INSTALLPATH
     git pull
 else
     git clone https://github.com/PiNet/PiNet-Screens /opt/PiNet-Screens
 fi
-
-cp $INSTALLPATH/pinet_screens/secrets/config_example.py $INSTALLPATH/pinet_screens/secrets/config.py
+if [[ ! -f ${INSTALLPATH}/pinet_screens/secrets/config.py ]]; then
+    cp ${INSTALLPATH}/pinet_screens/secrets/config_example.py ${INSTALLPATH}/pinet_screens/secrets/config.py
+else
+    echo "Config file already exists, not overriding at ${INSTALLPATH}/pinet_screens/secrets/config.py"
+fi
 
 echo "Installing required packages..."
 sudo apt install authbind -y
-pip3 install -r $INSTALLPATH/pinet_screens/requirements.txt
-(cd $INSTALLPATH/pinet_screens/ && sudo python3 create_user.py)
+pip3 install -r ${INSTALLPATH}/pinet_screens/requirements.txt
+(cd ${INSTALLPATH}/pinet_screens/ && sudo python3 create_user.py)
 
 echo "Adding pinetscreens user..."
 useradd -r pinetscreens
 
 sudo chown -R pinetscreens:pinetscreens /opt/PiNet-Screens/
 
+rm -f /etc/systemd/system/pinetscreens.service
 cp $INSTALLPATH/scripts/pinetscreens.service /etc/systemd/system/pinetscreens.service
 touch /etc/authbind/byport/80
 chown pinetscreens:pinetscreens /etc/authbind/byport/80
@@ -107,7 +111,10 @@ chmod 755 /etc/authbind/byport/80
 
 mkdir /home/shared/screens
 mkdir /home/shared/screens/scripts/
-chown root: /home/shared/screens
+chown pinetscreens:pinetscreens /home/shared/screens
+chown :pinetscreens /opt/ltsp/armhf/etc/lts.conf
+chmod 664 /opt/ltsp/armhf/etc/lts.conf
+
 chmod 0700 /home/shared/screens
 ReplaceAnyTextOnLine /usr/local/bin/bindfs-mount "/home/shared/screens" "bindfs -o perms=0775,force-group=teacher /home/shared/screens /home/shared/screens"
 

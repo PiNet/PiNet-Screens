@@ -1,5 +1,5 @@
-import os
-os.chdir("../")
+import sys
+sys.path.append("/opt/PiNet-Screens")
 
-import main
+import pinet_screens.main as main
 main.validate_startup()

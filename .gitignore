@@ -69,5 +69,5 @@ fabric.properties
 **__pycache__**
 
 venv/
-secrets/config.py
-pinet_screens.db
+*/secrets/config.py
+*/pinet_screens.db

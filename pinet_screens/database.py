@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import LoginUser, Base, Content, Client
+from .models import LoginUser, Base, Content, Client
 
 engine = create_engine('sqlite:///pinet_screens.db?check_same_thread=False')
 Base.metadata.bind = engine

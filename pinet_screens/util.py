@@ -1,11 +1,11 @@
 import re
-import pinet_screens.database as database
+import database as database
 import flask_bcrypt
 import random
 import string
 import copy
 
-import pinet_screens.lts_conf as lts_conf
+import lts_conf as lts_conf
 import secrets.config
 import os
 

@@ -58,7 +58,7 @@ END
 
 
 
-#echo "$LOGO"
+echo "$LOGO"
 
 echo ""
 echo ""
@@ -87,13 +87,12 @@ fi
 
 cp $INSTALLPATH/pinet_screens/secrets/config_example.py $INSTALLPATH/pinet_screens/secrets/config.py
 
-#python3 -m venv /opt/PiNet-Screens/venv
-#source /opt/PiNet-Screens/venv/bin/activate
+echo "Installing required packages..."
 sudo apt install authbind -y
 pip3 install -r $INSTALLPATH/pinet_screens/requirements.txt
 (cd $INSTALLPATH/pinet_screens/ && sudo python3 create_user.py)
-#deactivate
 
+echo "Adding pinetscreens user..."
 useradd -r pinetscreens
 
 sudo chown -R pinetscreens:pinetscreens /opt/PiNet-Screens/
@@ -123,4 +122,12 @@ systemctl daemon-reload
 systemctl start pinetscreens
 systemctl enable pinetscreens
 
-su -c "sensible-browser localhost" - $SUDO_USER
+su -c "sensible-browser localhost" - $SUDO_USER &
+
+
+echo ""
+echo "######################"
+echo "Installation Complete!"
+echo "######################"
+echo ""
+echo "You can access PiNet Screens by navigating to localhost in a web browser, or this machines IP address from another computer on the network"

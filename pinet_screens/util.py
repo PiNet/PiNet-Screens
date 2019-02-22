@@ -6,7 +6,7 @@ import string
 import copy
 
 import pinet_screens.lts_conf as lts_conf
-import pinet_screens.secrets.config as config
+import secrets.config
 import os
 
 default_new_client_message = """zenity --info --text '<span font="32">PiNet Screens</span><span font="20">\n\nThis client is not set up yet.\n\nHostname - {}\nMAC Address - {}</span>\n\n' --width 600"""

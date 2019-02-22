@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, make_response, redirect, flash, url_for
 from flask_login import login_user, login_required, logout_user
 
-import pinet_screens.forms as forms
-import pinet_screens.lts_conf as lts_conf
-import pinet_screens.database as database
-import pinet_screens.util as util
-import pinet_screens.secrets.config as config
+import forms as forms
+import lts_conf as lts_conf
+import database as database
+import util as util
+import secrets.config as config
 
 
 

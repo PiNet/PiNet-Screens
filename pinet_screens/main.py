@@ -1,9 +1,9 @@
 import flask_login
 from flask import Flask, render_template, redirect, url_for
-from .secrets.config import secret_key
-from .routes import routes
-import pinet_screens.database as database
-import pinet_screens.util as util
+from secrets.config import secret_key
+from routes import routes
+import database as database
+import util as util
 import getpass
 
 

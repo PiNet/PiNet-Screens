@@ -1,6 +1,6 @@
-import pinet_screens.util as util
+import util as util
 from typing import List, Dict
-import pinet_screens.secrets.config as config
+import secrets.config as config
 
 
 class RaspberryPi():

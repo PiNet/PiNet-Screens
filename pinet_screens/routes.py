@@ -57,20 +57,6 @@ def clients_home(client_id=None):
     return render_template("clients_home.html", form=form, clients=clients, content=content, edit=bool(client_id))
 
 
-@routes.route("/clients/disable_auto_login/<client_id>")
-@login_required
-def disable_auto_login(client_id):
-    database.update_ldm_autologin(client_id, False)
-    return redirect(url_for("routes.clients_home"))
-
-
-@routes.route("/clients/enable_auto_login/<client_id>")
-@login_required
-def enable_auto_login(client_id):
-    database.update_ldm_autologin(client_id, True)
-    return redirect(url_for("routes.clients_home"))
-
-
 @routes.route("/content")
 @login_required
 def content_home():

@@ -1,2 +1,2 @@
 import main
-main.validate_startup()
+main.validate_startup(override_first_time_check=True)

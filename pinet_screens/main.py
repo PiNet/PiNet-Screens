@@ -33,13 +33,18 @@ def home():
         return redirect(url_for("routes.login"))
 
 
-def validate_startup():
+def validate_startup(override_first_time_check=False):
     users = database.get_all_users()
+
+    if users and not override_first_time_check:
+        return
     if not users:
-        print("No users found on the system. Please create one.")
-        username = input("Input username: ")
-        password = getpass.getpass("Input password: ")
-        util.create_user(username, password)
+        print("No users found on the system. This is likely the first time the application has been started.")
+    print("Enter new user details below.")
+
+    username = input("Input username: ")
+    password = getpass.getpass("Input password: ")
+    util.create_user(username, password)
 
 
 if __name__ == '__main__':

@@ -4,10 +4,9 @@ After=network.target
 
 [Service]
 User=pinetscreens
-Group=www-data
-WorkingDirectory=/opt/PiNet-Screens/
-Environment="PATH=/opt/PiNet-Screens/venv/bin"
-ExecStart=/opt/PiNet-Screens/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:80  main:app
+Group=pinetscreens
+WorkingDirectory=/opt/PiNet-Screens/pinet_screens
+ExecStart=/usr/bin/authbind /usr/local/bin/gunicorn --workers 3 --bind 0.0.0.0:80  main:app
 
 [Install]
 WantedBy=multi-user.target

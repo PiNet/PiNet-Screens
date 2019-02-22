@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+INSTALLPATH="/opt/PiNet-Screens"
 
 ReplaceAnyTextOnLine(){
 # ReplaceTextLine /textfile bob brian
@@ -21,7 +22,7 @@ LOGO=$(cat <<-END
   _____  _  _   _        _      _____
  |  __ \(_)| \ | |      | |    / ____|
  | |__) |_ |  \| |  ___ | |_  | (___    ___  _ __  ___   ___  _ __   ___
- |  ___/| || . ` | / _ \| __|  \___ \  / __|| '__|/ _ \ / _ \| '_ \ / __|
+ |  ___/| || .   | / _ \| __|  \___ \  / __|| '__|/ _ \ / _ \| '_ \ / __|
  | |    | || |\  ||  __/| |_   ____) || (__ | |  |  __/|  __/| | | |\__ \
  |_|    |_||_| \_| \___| \__| |_____/  \___||_|   \___| \___||_| |_||___/
 
@@ -77,27 +78,34 @@ esac
 
 cd ../
 
-apt install python3-venv -y
+if [ -d "$INSTALLPATH" ]; then
+    cd $INSTALLPATH
+    git pull
+else
+    git clone https://github.com/PiNet/PiNet-Screens /opt/PiNet-Screens
+fi
 
-mkdir /opt/PiNet-Screens
-cp -r * /opt/PiNet-Screens
-cp /opt/PiNet-Screens/secrets/config_example.py /opt/PiNet-Screens/secrets/config.py
+cp $INSTALLPATH/pinet_screens/secrets/config_example.py $INSTALLPATH/pinet_screens/secrets/config.py
 
-python3 -m venv /opt/PiNet-Screens/venv
-source /opt/PiNet-Screens/venv/bin/activate
-pip3 install -r /opt/PiNet-Screens/requirements.txt
-python3 /opt/PiNet-Screens/scripts/create_user.py
-deactivate
+#python3 -m venv /opt/PiNet-Screens/venv
+#source /opt/PiNet-Screens/venv/bin/activate
+pip3 install -r $INSTALLPATH/pinet_screens/requirements.txt
+(cd $INSTALLPATH/pinet_screens/ && sudo python3 create_user.py)
+#deactivate
 
 useradd -r pinetscreens
 
-cp scripts/pinetscreens.service /etc/systemd/system/pinetscreens.service
+sudo chown -R pinetscreens:pinetscreens /opt/PiNet-Screens/
 
+cp $INSTALLPATH/scripts/pinetscreens.service /etc/systemd/system/pinetscreens.service
+touch /etc/authbind/byport/80
+chown pinetscreens:pinetscreens /etc/authbind/byport/80
+chmod 755 /etc/authbind/byport/80
 
-sudo systemctl start pinetscreens
-sudo systemctl enable pinetscreens
+systemctl daemon-reload
 
-sensible-browser localhost:80
+systemctl start pinetscreens
+systemctl enable pinetscreens
 
 
 # Setup shared folder that is used
@@ -107,3 +115,5 @@ mkdir /home/shared/screens/scripts/
 chown root: /home/shared/screens
 chmod 0700 /home/shared/screens
 ReplaceAnyTextOnLine /usr/local/bin/bindfs-mount "/home/shared/screens" "bindfs -o perms=0775,force-group=teacher /home/shared/screens /home/shared/screens"
+
+su -c 'sensible-browser localhost' - $SUDO_USER

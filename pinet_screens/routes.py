@@ -158,3 +158,16 @@ def endpoint_update():
 
     print(update)
     return ""
+
+
+@routes.route("/clients/update_autologin_ajax", methods=['POST'])
+def client_autologin_update():
+    status = request.form['status']
+    client_id = request.form['client_id']
+    if status == "false":
+        database.update_ldm_autologin(int(client_id), False)
+    elif status == "true":
+        database.update_ldm_autologin(int(client_id), True)
+    else:
+        pass
+    return ""

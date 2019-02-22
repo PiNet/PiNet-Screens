@@ -89,6 +89,7 @@ cp $INSTALLPATH/pinet_screens/secrets/config_example.py $INSTALLPATH/pinet_scree
 
 #python3 -m venv /opt/PiNet-Screens/venv
 #source /opt/PiNet-Screens/venv/bin/activate
+sudo apt install authbind -y
 pip3 install -r $INSTALLPATH/pinet_screens/requirements.txt
 (cd $INSTALLPATH/pinet_screens/ && sudo python3 create_user.py)
 #deactivate
@@ -102,11 +103,6 @@ touch /etc/authbind/byport/80
 chown pinetscreens:pinetscreens /etc/authbind/byport/80
 chmod 755 /etc/authbind/byport/80
 
-systemctl daemon-reload
-
-systemctl start pinetscreens
-systemctl enable pinetscreens
-
 
 # Setup shared folder that is used
 
@@ -116,4 +112,15 @@ chown root: /home/shared/screens
 chmod 0700 /home/shared/screens
 ReplaceAnyTextOnLine /usr/local/bin/bindfs-mount "/home/shared/screens" "bindfs -o perms=0775,force-group=teacher /home/shared/screens /home/shared/screens"
 
-su -c 'sensible-browser localhost' - $SUDO_USER
+echo ""
+echo "######################"
+echo "Starting PiNet Screens"
+echo "######################"
+echo ""
+
+systemctl daemon-reload
+
+systemctl start pinetscreens
+systemctl enable pinetscreens
+
+su -c "sensible-browser localhost" - $SUDO_USER

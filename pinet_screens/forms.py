@@ -17,7 +17,7 @@ class ClientForm(Form):
             raise ValidationError('Invalid client MAC address. All Raspberry Pi MAC addresses start with B8:27:EB')
 
     mac_address = StringField("MAC Address", validators=[DataRequired(), MacAddress(), pi_validation])
-    hostname = StringField("Machine hostname", validators=[DataRequired(), hostname_validation])
+    hostname = StringField("Machine hostname", validators=[DataRequired()])
     location = StringField("Machine location", validators=[DataRequired()])
 
 

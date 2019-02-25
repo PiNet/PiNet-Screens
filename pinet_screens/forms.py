@@ -23,7 +23,7 @@ class ClientForm(Form):
 
 class BrowserContentForm(Form):
     content_name = StringField("Content name", [DataRequired()])
-    content_url = StringField("URL", [DataRequired(), URL()])
+    content_url = StringField("URL", [DataRequired()])
 
 
 class ScriptContentForm(Form):

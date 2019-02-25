@@ -42,7 +42,7 @@ def create_user(username, password):
 def write_browser(path, url):
     print("Writing browser to {} with {}".format(path, url))
     with open(path, "w") as f:
-        f.write("chromium-browser --kiosk --app={}".format(url))
+        f.write("rm /home/$USER/.config/google-chrome/SingletonLock && chromium-browser --disable-session-crashed-bubble --kiosk --app={}".format(url))
 
 
 def write_script(path, script):

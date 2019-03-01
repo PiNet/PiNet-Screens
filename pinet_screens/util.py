@@ -25,6 +25,11 @@ def create_password_salt(password):
     return salt, bcrypt_password
 
 
+def change_password(user_id, password):
+    password_salt, password_hash = create_password_salt(password)
+    database.change_password(user_id, password_hash, password_salt)
+
+
 def validate_login(username, password):
     print("Attempting to validate login for {}".format(username))
     user = database.get_login_user_from_username(username)

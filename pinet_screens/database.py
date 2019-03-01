@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -108,7 +109,7 @@ def get_login_user_from_id(user_id):
     return login_user
 
 
-def get_all_users():
+def get_all_users() -> List[LoginUser]:
     users = db_session.query(LoginUser).all()
     return users
 
@@ -116,4 +117,16 @@ def get_all_users():
 def update_client_check_in(client_id):
     client = get_client_from_id(client_id)
     client.last_checked_in = datetime.datetime.now()
+    db_session.commit()
+
+
+def remove_user(user_id):
+    db_session.query(LoginUser).filter(LoginUser.user_id == user_id).delete()
+    db_session.commit()
+
+
+def change_password(user_id, password_hash, password_salt):
+    user = db_session.query(LoginUser).filter(LoginUser.user_id == user_id).first()
+    user.password_hash = password_hash
+    user.password_salt = password_salt
     db_session.commit()
